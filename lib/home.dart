@@ -1,184 +1,172 @@
-import 'package:app2/app.dart';
+import 'package:app2/product.dart';
 import 'package:flutter/material.dart';
 
-class MyHome extends StatefulWidget {
-  const MyHome({super.key});
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
   @override
-  State<MyHome> createState() => _MyState();
+  State<Homepage> createState() => _MyState();
 }
 
-class _MyState extends State<MyHome> {
-  GlobalKey<FormState> formState = GlobalKey();
-  GlobalKey<FormState> formState2 = GlobalKey();
-  bool isArabic = false;
-  String? id;
-  String? password;
-  String lbl = "ID/Account number";
-  String lbl2 = "Password";
-  String hint = "enter your id/account number";
-  String hint2 = "enter your password";
+class _MyState extends State<Homepage> {
+  List categories = [
+    {"income": Icons.laptop, "title": "Laptop"},
+    {"income": Icons.phone_android, "title": "Phone"},
+    {"income": Icons.electric_bike, "title": "Bike"},
+    {"income": Icons.card_giftcard, "title": "Gift"},
+    {"income": Icons.electric_car, "title": "Car"},
+  ];
+  List image = [
+    {"image": "images/a.jpg", "price": "3.00\$", "title": "M-13"},
+    {"image": "images/b.jpg", "price": "2.00\$", "title": "QS3"},
+    {"image": "images/a.jpg", "price": "3.00\$", "title": "M-13"},
+    {"image": "images/b.jpg", "price": "2.00\$", "title": "QS3"},
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.orange,
+        iconSize: 25,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: "home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: "products",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_2_outlined),
+            label: "profile",
+          ),
+        ],
+      ),
       body: Container(
-        padding: EdgeInsets.all(0),
-        height: 700,
-        width: 400,
-        child: Stack(
+        color: Colors.black,
+        padding: EdgeInsets.all(20),
+        child: ListView(
           children: [
-            Positioned(
-              top: 10,
-              right: 0,
-              child: Container(color: Colors.red, height: 300, width: 360),
-            ),
-            Positioned(
-              top: 310,
-              left: 0,
-              child: Container(color: Colors.white, height: 300, width: 360),
-            ),
-            Positioned(
-              top: 20,
-              left: 300,
-              child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    if (isArabic == false) {
-                      lbl = "ادخل رقم الحساب";
-                      lbl2 = "ادخل كلمة السر";
-                      hint = "رقم الحساب";
-                      hint2 = "كلمة السر";
-                      isArabic = true;
-                    } else {
-                      lbl = "enter your id/account number";
-                      lbl2 = "enter your password";
-                      hint = "id/account number";
-                      hint2 = "password";
-                      isArabic = false;
-                    }
-                  });
-                },
-                icon: Icon(Icons.language, size: 30, color: Colors.deepPurple),
-              ),
-            ),
-            Positioned(
-              top: 210,
-              child: Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                width: 330,
-                height: 90,
-                color: Colors.transparent,
-                child: Form(
-                  key: formState,
-                  autovalidateMode: AutovalidateMode.always,
+            Row(
+              children: [
+                Expanded(
                   child: TextFormField(
-                    maxLength: 8,
-                    onSaved: (val) {
-                      id = val;
-                    },
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "empty";
-                      }
-                      if (value.length < 8) {
-                        return "id must be longer";
-                      }
-                      return null;
-                    },
                     decoration: InputDecoration(
-                      label: Text(lbl),
-                      hintText: hint,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      hintText: "search",
+                      hintStyle: TextStyle(color: Colors.blue),
+                      prefix: Icon(Icons.search, color: Colors.black),
                       fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
+                      filled: true,
                     ),
                   ),
                 ),
-              ),
-            ),
-            Positioned(
-              top: 310,
-              child: Container(
-                margin: EdgeInsets.all(10),
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                width: 330,
-                height: 90,
-                color: Colors.transparent,
-                child: Form(
-                  key: formState2,
-                  autovalidateMode: AutovalidateMode.always,
-                  child: TextFormField(
-                    onSaved: (val) {
-                      password = val;
-                    },
-                    maxLength: 8,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "empty";
-                      }
-                      if (value.length < 8) {
-                        return "password must be longer";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      label: Text(lbl2),
-                      hintText: hint2,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                  ),
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Icon(Icons.menu, size: 35, color: Colors.white),
                 ),
+              ],
+            ),
+            SizedBox(height: 10),
+            Text(
+              "categories",
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
               ),
             ),
-            Positioned(
-              left: 130,
-              top: 500,
-              child: MaterialButton(
-                onPressed: () {
-                  formState.currentState!.save();
-                  formState2.currentState!.save();
-                  if (formState.currentState!.validate() &&
-                      formState2.currentState!.validate() &&
-                      id == "12345678" &&
-                      password == "12345678") {
-                    // ignore: avoid_print
-                    print(id);
-                    // ignore: avoid_print
-                    print(password);
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => App()),
-                      (route) => false,
-                    );
-                  }
-                  
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(
-                          "Successful Login",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.green),
+            Container(
+              height: 80,
+              margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              child: ListView.builder(
+                itemCount: categories.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, i) {
+                  return Container(
+                    margin: EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: Icon(categories[i]["income"]),
                         ),
-                        content: Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                          size: 35,
+                        Text(
+                          categories[i]["title"],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   );
                 },
-                color: Colors.red,
-                textColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Text("Login"),
               ),
+            ),
+            Text(
+              "best selling",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.white,
+              ),
+            ),
+            GridView.builder(
+              itemCount: 4,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisExtent: 200,
+              ),
+              itemBuilder: (context, i) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Product(data: image[i]),
+                      ),
+                    );
+                  },
+                  child: Card(
+                    color: Colors.white,
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 300,
+                          height: 100,
+                          padding: EdgeInsets.all(10),
+                          child: Image.asset(image[i]["image"]),
+                        ),
+                        Text(
+                          image[i]["price"],
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight(800),
+                            color: Colors.green,
+                          ),
+                        ),
+                        Text(
+                          image[i]["title"],
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight(800),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),
